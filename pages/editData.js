@@ -45,7 +45,7 @@ export default function EditData() {
         <select
           className={styles.select} // Estilo
           value={id} // Tipo de Valor
-          onChange={(e) => router.push(`/editData/${e.target.value}`)}> // Envia para a pagina de edição
+          onChange={(e) => router.push(`/editData/${e.target.value}`)}> {/*Envia para a pagina de edição*/}
           <option value="">Select a user</option>
           {users.map((user) => (
             <option // Mostra o nome de todos os usuarios
