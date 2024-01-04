@@ -5,11 +5,20 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
   if (req.method === 'POST') { // Verifica se o método da requisição é POST
     try {
-      const { name, email } = req.body; // Extrai os campos 'name' e 'email' do corpo da requisição
-      const newUser = await prisma.user.create({ // Cria um novo usuário no banco de dados utilizando o Prisma
+      const { nome, nota1, nota2, nota3, nota4, nota5, nota6, nota7, nota8, nota9, nota10 } = req.body;
+      const newUser = await prisma.aluno.create({ 
         data: {
-          name,
-          email,
+          nome,
+          nota1,
+          nota2,
+          nota3,
+          nota4,
+          nota5,
+          nota6,
+          nota7,
+          nota8,
+          nota9,
+          nota10,
         },
       });
       console.log('Novo usuário criado:', newUser); // Registra no console o novo usuário criado

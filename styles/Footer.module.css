@@ -1,0 +1,41 @@
+.footer {
+    padding: 2em;
+    text-align: center;
+    background-color: #212529;
+    color: white;
+}
+
+.footer span {
+    font-size: larger;
+    background-color: blue;
+    padding: 5px;
+    text-shadow: -1px -1px 0 #212529,
+        1px -1px 0 #212529,
+        -1px 1px 0 #212529,
+        1px 1px 0 #212529;
+}
+
+.footer span2 {
+    font-size: larger;
+    background-color: yellow;
+    padding: 5px;
+    border: 2px solid rgb(33, 37, 41);
+    text-shadow: -1px -1px 0 #212529,
+        1px -1px 0 #212529,
+        -1px 1px 0 #212529,
+        1px 1px 0 #212529;
+}
+
+.footer span3 {
+    font-size: larger;
+    background-color: orange;
+    padding: 5px;
+    text-shadow: -1px -1px 0 #212529,
+        1px -1px 0 #212529,
+        -1px 1px 0 #212529,
+        1px 1px 0 #212529;
+}
+
+.footer span4 {
+    font-family: cursive;
+}

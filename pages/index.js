@@ -1,59 +1,119 @@
-import { PrismaClient } from '@prisma/client';
 import { useState } from 'react';
-import Link from 'next//link'
-import Head from 'next/head'
+import Link from 'next/link'
+import Image from 'next/image'
 import styles from '../styles/teste.module.css'
-const prisma = new PrismaClient();
+import Head from 'next/head'
 
-export default function Home() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+const criterios = [
+  'Mostra interesse em livros/contação de histórias.',
+  'Compreende instruções verbais.',
+  'Expressa ideias claramente.',
+  'Usa vocabulário variado.',
+  'Compreende histórias contadas/lidas.',
+  'Participa ativamente de rimas/jogos de palavras.',
+  'Conta histórias ou eventos de maneira coerente.',
+  'Identifica sons ou ritmos na linguagem.',
+  'Entende e responde a perguntas sobre uma história.',
+  'Mostra prazer em aprender novas palavras.',
+];
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Cancela o recarregar da pagina quando clicar no botão
+const NotasPage = () => {
+  const [nome, setNome] = useState('');
+  const [notas, setNotas] = useState(Array(10).fill(0));
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     try {
-      const response = await fetch('/api/addData', { // Fetch no diretorio da API de Adicionar dados no banco
-        method: 'POST', // POST: Postar/Enviar
+      const response = await fetch('/api/Data', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email }), // Envia nome e e-mail
+        body: JSON.stringify({
+          nome,
+          ...notas.reduce((acc, nota, index) => {
+            acc[`nota${index + 1}`] = nota;
+            return acc;
+          }, {}),
+        }),
       });
+
       if (response.ok) {
-        console.log('Data added successfully!'); // Funcionou
+        console.log('Notas enviadas com sucesso!');
+        // Lógica para lidar com sucesso no envio das notas
       } else {
-        alert('Error adding data!'); // Não funcionou
+        console.error('Falha ao enviar notas.');
+        // Lógica para lidar com falha no envio das notas
       }
     } catch (error) {
-      alert('Error adding data!');
-      console.error(error); // Envia o erro no console
+      console.error('Erro ao enviar notas:', error);
+      // Lógica para lidar com erro no envio das notas
     }
+  };
+
+  const handleNotaChange = (index, value) => {
+    const newNotas = [...notas];
+    newNotas[index] = parseInt(value);
+    setNotas(newNotas);
   };
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>Criar usuario</title> 
+        <title>Pagina inicial</title>
       </Head>
-      <h1 className={styles.title}>Add Data</h1>
+      <h1 className={styles.title}>Avaliação Linguística</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="text" // Tipo
-          placeholder="Name" // Texto
-          value={name} // Tipo de valor
-          onChange={(e) => setName(e.target.value)} // Envia pra função
-        />
-        <input
-          type="email" // Tipo
-          placeholder="Email" // Texto
-          value={email} // Tipo de valor
-          onChange={(e) => setEmail(e.target.value)} // Envia pra função
-        />
-        <button type="submit" className={styles.button}>Add Data</button>
+        <label>
+          <span className={styles.nome}>Nome do Aluno:</span>   
+          <input
+            type="text"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+        </label>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Critérios</th>
+              <th>Nota</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              criterios.map((criterio, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{criterio}</td>
+                  <td className={styles.tableData}>
+                    {[...Array(7)].map((_, buttonIndex) => (
+                      <div key={buttonIndex}>
+                        <input
+                          type="radio"
+                          id={`nota-${index}-${buttonIndex}`}
+                          name={`nota-${index}`}
+                          value={buttonIndex + 1}
+                          checked={notas[index] === buttonIndex + 1}
+                          onChange={() => handleNotaChange(index, buttonIndex + 1)}
+                          className={styles.radioInput}
+                        />
+                        <label htmlFor={`nota-${index}-${buttonIndex}`} className={styles.radioLabel}>
+                          {buttonIndex + 1}
+                        </label>
+                      </div>
+                    ))}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <button type="submit" className={styles.button}>Salvar</button>
       </form>
-        <Link href='/ShowData' className={styles.button}>Ver dados</Link>
-        <Link href='/editData' className={styles.button}>Editar</Link>
     </div>
   );
-}
+};
 
+export default NotasPage;

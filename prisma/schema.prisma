@@ -10,8 +10,18 @@ datasource db {
   url      = "mysql://root:112233lUaN'@localhost:3306/teste"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+
+model Aluno {
+  id Int @id @default(autoincrement())
+  nome String
+  nota1 Int
+  nota2 Int
+  nota3 Int
+  nota4 Int
+  nota5 Int
+  nota6 Int
+  nota7 Int
+  nota8 Int
+  nota9 Int
+  nota10 Int
 }
